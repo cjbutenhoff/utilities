@@ -5,7 +5,7 @@
 
     <groupId>com.wp.utilities</groupId>
     <artifactId>wp-utilities</artifactId>
-    <version>0.1.0</version>
+    <version>1.0.0</version>
     <description>WPOST Utilities for serverlet filter, S3, Kafka, ElasticSearch and Nile</description>
     <name>WPOST Utilities</name>
    <packaging>jar</packaging>
@@ -118,13 +118,14 @@
 
 
     <build>
-        <finalName>wp-utilities</finalName>
+        <finalName>${pom.artifactId}-${pom.version}</finalName>
         <plugins>
 <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
 				  <!-- DO NOT include log4j.properties file in your Jar -->
+<outputDirectory>./libs</outputDirectory>
 				  <excludes>
 					<exclude>**/log4j.properties</exclude>
 				  </excludes>
