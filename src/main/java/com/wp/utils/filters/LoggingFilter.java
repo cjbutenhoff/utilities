@@ -57,6 +57,7 @@ public final class LoggingFilter extends JSONObject implements Filter {
         this.put("log", req.getMethod() + " " + req.getPathInfo());
 
         // All the parameters
+        @SuppressWarnings("unchecked")
         Enumeration<String> params = request.getParameterNames();
         for (; params.hasMoreElements();) {
             String param = params.nextElement();
@@ -64,6 +65,7 @@ public final class LoggingFilter extends JSONObject implements Filter {
         }
 
         // All the headers
+        @SuppressWarnings("unchecked")
         Enumeration<String> headers = req.getHeaderNames();
         for (; headers.hasMoreElements();) {
             String header = headers.nextElement();
