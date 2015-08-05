@@ -27,6 +27,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -56,13 +62,13 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.10</version><!--$NO-MVN-MAN-VER$-->
+			<version>4.10</version><!--$NO-MVN-MAN-VER$ -->
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
-			<version>1.7.10</version><!--$NO-MVN-MAN-VER$-->
+			<version>1.7.10</version><!--$NO-MVN-MAN-VER$ -->
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
@@ -115,7 +121,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.11</version><!--$NO-MVN-MAN-VER$-->
+			<version>1.7.11</version><!--$NO-MVN-MAN-VER$ -->
 			<type>jar</type>
 		</dependency>
 		<dependency>
@@ -128,7 +134,7 @@
 
 
 	<build>
-		<finalName>${pom.artifactId}-${pom.version}</finalName>
+		<finalName>${project.artifactId}-${project.version}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -148,16 +154,16 @@
 					</archive>
 				</configuration>
 			</plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
-                <version>2.2</version><!--$NO-MVN-MAN-VER$ -->
-            </plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>2.2</version><!--$NO-MVN-MAN-VER$ -->
+			</plugin>
 			<!-- Copy project dependency -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.5.1</version><!--$NO-MVN-MAN-VER$-->
+				<version>2.5.1</version><!--$NO-MVN-MAN-VER$ -->
 				<executions>
 					<execution>
 						<id>copy-dependencies</id>
