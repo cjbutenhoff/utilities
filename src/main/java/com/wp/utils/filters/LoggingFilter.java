@@ -7,32 +7,39 @@ import java.net.URISyntaxException;
 import java.util.Enumeration;
 import java.util.UUID;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
+
 import org.apache.commons.io.output.TeeOutputStream;
 import org.json.JSONObject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.mock.web.DelegatingServletOutputStream;
+import org.springframework.stereotype.Component;
 
 @Component
-
 public final class LoggingFilter extends JSONObject implements Filter {
 
     private JSONObject headersLog = new JSONObject();
-    private static final Logger headersLogger = LoggerFactory.getLogger("headers");
-    private static final Logger requestLogger = LoggerFactory.getLogger("requests");
+    private static final Logger headersLogger = LoggerFactory
+            .getLogger("headers");
+    private static final Logger requestLogger = LoggerFactory
+            .getLogger("requests");
 
     @Override
     public void init(FilterConfig filterConfigObj) {
     }
 
     @Override
-    public void doFilter(
-            ServletRequest request,
-            ServletResponse response,
+    public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain) throws IOException, ServletException {
 
         URI uri = null;
@@ -82,7 +89,8 @@ public final class LoggingFilter extends JSONObject implements Filter {
 
         // Run the request
         OutputStream outstr = new java.io.ByteArrayOutputStream();
-        HttpServletResponse responseWrapper = responseWrapper((HttpServletResponse) response, outstr);
+        HttpServletResponse responseWrapper = responseWrapper(
+                (HttpServletResponse) response, outstr);
         chain.doFilter(request, responseWrapper);
 
         // Log everything
@@ -95,13 +103,13 @@ public final class LoggingFilter extends JSONObject implements Filter {
     public void destroy() {
     }
 
-    private HttpServletResponse responseWrapper(HttpServletResponse response, final OutputStream out) {
+    private HttpServletResponse responseWrapper(HttpServletResponse response,
+            final OutputStream out) {
         return new HttpServletResponseWrapper(response) {
             @Override
             public ServletOutputStream getOutputStream() throws IOException {
-                return new DelegatingServletOutputStream(
-                        new TeeOutputStream(super.getOutputStream(), out)
-                );
+                return new DelegatingServletOutputStream(new TeeOutputStream(
+                        super.getOutputStream(), out));
             }
         };
     }

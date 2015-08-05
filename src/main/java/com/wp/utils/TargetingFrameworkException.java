@@ -6,21 +6,21 @@ package com.wp.utils;
  */
 public class TargetingFrameworkException extends Exception {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  public TargetingFrameworkException() {
-    super();
-  }
+    public TargetingFrameworkException() {
+        super();
+    }
 
-  public TargetingFrameworkException(String message, Throwable e) {
-    super(message, e);
-  }
+    public TargetingFrameworkException(String message, Throwable e) {
+        super(message, e);
+    }
 
-  public TargetingFrameworkException(String message) {
-    super(message);
-  }
+    public TargetingFrameworkException(String message) {
+        super(message);
+    }
 
-  public TargetingFrameworkException(Throwable e) {
-    super(e);
-  }
+    public TargetingFrameworkException(Throwable e) {
+        super(e);
+    }
 }

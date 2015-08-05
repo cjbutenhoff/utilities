@@ -5,10 +5,11 @@
  */
 package com.wp.utils;
 
-import com.newrelic.api.agent.NewRelic;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.newrelic.api.agent.NewRelic;
 
 /**
  * This class provides a generic abstraction to record metrics. At the moment we
