@@ -1,2 +1,9 @@
 /target/*
 *.swp
+/target/
+
+#eclipse
+.classpath
+.project
+.settings/
+bin/
