@@ -5,8 +5,8 @@
  */
 
 package com.wp.utils.kafka;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+//import org.apache.commons.logging.Log;
+//import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ImportResource;
@@ -25,7 +25,7 @@ public class KafkaProducer {
     @Autowired
     @Qualifier("inputToKafka")
     MessageChannel messageChannel;
-    private Log log = LogFactory.getLog(getClass());
+//    private Log log = LogFactory.getLog(getClass());
 
     public void produce(String message) throws Exception {
 

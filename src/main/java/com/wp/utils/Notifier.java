@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 public class Notifier {
 
     private static final Logger logger = LoggerFactory.getLogger("exceptions");
-    private static final Logger rawlogger = LoggerFactory.getLogger("exceptions-raw");
+//    private static final Logger rawlogger = LoggerFactory.getLogger("exceptions-raw");
 
     public static void noticeError(Exception e) {
         // Don't alert in the middle of the night
