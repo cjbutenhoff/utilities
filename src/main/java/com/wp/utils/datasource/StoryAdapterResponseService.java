@@ -4,41 +4,40 @@ import java.net.URI;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.retry.policy.TimeoutRetryPolicy;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-@Service
 public class StoryAdapterResponseService {
 
     private static final Logger log = LoggerFactory
             .getLogger(StoryAdapterResponseService.class);
 
-    @Value("${story-adapter.host}")
-    private String storyAdapterApiHost;
-
-    @Value("${story-adapter.read-timeout}")
-    private int storyAdapterReadTimeout;
-
-    @Value("${story-adapter.connect-timeout}")
-    private int storyAdapterConnectTimeout;
-
     private final RestOperations restOperations;
+    private final RetryTemplate retryTemplate;
+    private final String host;
 
-    public StoryAdapterResponseService() {
+    public StoryAdapterResponseService(String host, int readTimeout, int connectTimeout) {
+        this.host = host;
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-        factory.setReadTimeout(storyAdapterReadTimeout);
-        factory.setConnectTimeout(storyAdapterConnectTimeout);
+        factory.setReadTimeout(readTimeout);
+        factory.setConnectTimeout(connectTimeout);
         restOperations = new RestTemplate(factory);
+        retryTemplate = new RetryTemplate();
+        TimeoutRetryPolicy timeoutRetryPolicy = new TimeoutRetryPolicy();
+        timeoutRetryPolicy.setTimeout(30000L);
+        retryTemplate.setRetryPolicy(timeoutRetryPolicy);
     }
 
     public StoryAdapterResponse findByUrl(String url) {
         URI queryUrl = UriComponentsBuilder.newInstance().scheme("http")
-                .host(storyAdapterApiHost).path("/api/url/")
+                .host(host).path("/api/url/")
                 .queryParam("url", url).build().toUri();
         log.debug("StoryAdapter query: " + queryUrl);
         StoryAdapterResponse res = null;
@@ -46,7 +45,13 @@ public class StoryAdapterResponseService {
             res = restOperations.getForObject(queryUrl,
                     StoryAdapterResponse.class);
         } catch (HttpClientErrorException e) {
-            log.warn("Storyadapter 404 for: " + url);
+            log.warn("Storyadapter 4xx for: " + url);
+        } catch (HttpServerErrorException e) {
+            log.warn("Storyadapter 5xx for: " + url);
+        } catch (ResourceAccessException e) {
+            log.warn("Storyadapter timeout for: " + url);
+        } catch (org.springframework.http.converter.HttpMessageNotReadableException e) {
+            log.warn("Storyadapter can't read doc for: " + url);
         }
         return res;
     }
